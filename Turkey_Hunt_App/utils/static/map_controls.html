@@ -14,10 +14,6 @@
     <button class='bar-btn' id='btn-panel-weather' onclick='togglePanel("weather")'>🌤️ Weather</button>
     <button class='bar-btn' id='btn-about'         onclick='openAboutModal()'>ℹ️ About</button>
   </div>
-  <div class='bar-sep'></div>
-  <div class='bar-group'>
-    <button class='bar-btn' id='btn-edit-mode' onclick='toggleEditMode()'>✏️ Edit</button>
-  </div>
 </div>
 
 <!-- Layers Panel -->
@@ -167,6 +163,13 @@
 <!-- Tools Panel -->
 <div class='map-panel' id='tools-panel'>
   <div class='panel-title'>🛠️ Tools</div>
+
+  <div class='ctrl-section'>
+    <div class='edit-mode-hint'>Click <strong>Edit Mode</strong> to place markers or draw lines and polygons on the map. Popups are hidden while active.</div>
+    <button class='tool-btn edit-mode-btn' id='btn-edit-mode' onclick='toggleEditMode()'>✏️ Edit Mode</button>
+  </div>
+
+  <div class='ctrl-divider'></div>
 
   <div class='ctrl-section'>
     <div class='ctrl-label'>📍 My Markers</div>

@@ -147,6 +147,10 @@ select:focus { outline: none; border-color: #DAA520; }
 .tool-btn.active { background: #4a1a6b; border-color: #8B45c8; color: #fff; }
 .tool-btn.danger { color: #e74c3c; border-color: rgba(231,76,60,0.4); }
 .tool-btn.danger:hover { background: rgba(231,76,60,0.2); }
+.tool-btn.edit-mode-btn { width: 100%; font-size: 12px; padding: 7px 10px; color: #DAA520; border-color: rgba(218,165,32,0.5); }
+.tool-btn.edit-mode-btn:hover { background: rgba(218,165,32,0.15); border-color: #DAA520; color: #f5deb3; }
+.tool-btn.edit-mode-btn.active { background: rgba(218,165,32,0.25); border-color: #DAA520; color: #f5deb3; }
+.edit-mode-hint { font-size: 10px; color: #888; line-height: 1.4; margin-bottom: 6px; }
 
 /* Marker selects */
 .marker-select {
