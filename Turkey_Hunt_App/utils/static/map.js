@@ -1417,7 +1417,6 @@ function startDraw(mode) {
   document.getElementById('btn-place-marker').classList.remove('active');
   map.getCanvas().style.cursor = '';
   drawModeActive = true;
-  if (!editModeActive) toggleEditMode();
   if (mode === 'line')    draw.changeMode('draw_line_string');
   if (mode === 'polygon') draw.changeMode('draw_polygon');
 }
@@ -1466,7 +1465,6 @@ function selectMarkerType(type) {
   markerModeActive = true;
   document.getElementById('btn-place-marker').classList.add('active');
   map.getCanvas().style.cursor = 'crosshair';
-  if (!editModeActive) toggleEditMode();
 }
 
 function toggleMarkerMode() {
