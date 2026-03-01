@@ -10,6 +10,49 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+# ── Login gate ────────────────────────────────────────────────────────────────
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+if not st.session_state.authenticated:
+    st.markdown("""
+    <style>
+      #MainMenu, footer, header { display: none !important; }
+      [data-testid="stSidebar"]      { display: none !important; }
+      [data-testid="stDecoration"]   { display: none !important; }
+      [data-testid="stStatusWidget"] { display: none !important; }
+      html, body { background: #0d140d !important; }
+      .block-container { max-width: 400px !important; padding-top: 8vh !important; }
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div style='text-align:center;margin-bottom:24px'>
+      <div style='font-size:48px'>🦃</div>
+      <div style='font-size:20px;font-weight:700;color:#DAA520;margin-top:8px'>
+        Southwest Idaho - Turkey Hunt Insights
+      </div>
+      <div style='font-size:13px;color:#888;margin-top:4px'>Sign in to access the map</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    with st.form("login_form"):
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        submitted = st.form_submit_button("Sign In", use_container_width=True)
+
+    if submitted:
+        valid_user = st.secrets.get("auth", {}).get("username", "")
+        valid_pass = st.secrets.get("auth", {}).get("password", "")
+        if username == valid_user and password == valid_pass:
+            st.session_state.authenticated = True
+            st.rerun()
+        else:
+            st.error("Incorrect username or password.")
+
+    st.stop()
+
+# ── Authenticated — strip chrome and show map ─────────────────────────────────
 # Strip all Streamlit chrome and make the iframe fill the entire viewport
 st.markdown("""
 <style>
