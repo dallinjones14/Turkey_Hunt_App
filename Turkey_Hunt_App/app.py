@@ -23,12 +23,22 @@ if not st.session_state.authenticated:
       [data-testid="stStatusWidget"] { display: none !important; }
       html, body { background: #0d140d !important; }
       .block-container { max-width: 400px !important; padding-top: 8vh !important; }
+      /* White text in input fields */
+      input[type="text"], input[type="password"] {
+        color: #ffffff !important;
+        background-color: #1a2a1a !important;
+        border: 1px solid rgba(218,165,32,0.4) !important;
+      }
+      input[type="text"]::placeholder, input[type="password"]::placeholder {
+        color: #888 !important;
+      }
+      [data-testid="stTextInput"] label,
+      [data-testid="stTextInput"] p { color: #ccc !important; }
     </style>
     """, unsafe_allow_html=True)
 
     st.markdown("""
     <div style='text-align:center;margin-bottom:24px'>
-      <div style='font-size:48px'>🦃</div>
       <div style='font-size:20px;font-weight:700;color:#DAA520;margin-top:8px'>
         Southwest Idaho - Turkey Hunt Insights
       </div>
