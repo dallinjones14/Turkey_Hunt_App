@@ -1,0 +1,534 @@
+/* Idaho Turkey Hunt Map - Styles */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; width: 100%; overflow: hidden; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+#map { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
+
+/* Push Mapbox built-in controls below the top banner */
+.mapboxgl-ctrl-top-left,
+.mapboxgl-ctrl-top-right { top: 56px !important; }
+
+/* ── Top Banner ──────────────────────────────────────────────────────── */
+#top-banner {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  color: #fff;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.95), 0 0 20px rgba(0,0,0,0.8);
+  pointer-events: none;
+}
+
+/* ── Bottom Control Bar ──────────────────────────────────────────────── */
+#bottom-bar {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+  z-index: 10;
+}
+
+.bar-group { display: flex; align-items: center; gap: 6px; }
+
+.bar-sep {
+  width: 1px; height: 32px;
+  background: rgba(255,255,255,0.25);
+  margin: 0 8px;
+}
+
+.bar-btn {
+  background: rgba(20, 20, 20, 0.60);
+  border: 1px solid rgba(255,255,255,0.28);
+  border-radius: 10px;
+  color: #f0f0f0;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 11px 26px;
+  transition: all 0.15s;
+  white-space: nowrap;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.45);
+}
+.bar-btn:hover { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.45); }
+.bar-btn.active { background: rgba(218,165,32,0.28); border-color: #DAA520; color: #f5deb3; }
+
+/* ── Floating Panels ─────────────────────────────────────────────────── */
+.map-panel {
+  display: none;
+  position: absolute;
+  bottom: 62px;        /* sit just above the bottom bar */
+  right: 10px;
+  background: rgba(14,17,23,0.93);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 18px;
+  z-index: 10;
+  color: #f0f0f0;
+  font-size: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.55);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+.map-panel.open { display: block; }
+
+.panel-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #DAA520;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+}
+
+#layers-panel { min-width: 300px; max-height: calc(100vh - 130px); overflow-y: auto; }
+#legend-panel { min-width: 270px; max-height: calc(100vh - 130px); overflow-y: auto; }
+#tools-panel  { min-width: 280px; max-height: calc(100vh - 130px); overflow-y: auto; }
+#season-panel { min-width: 140px; left: 10px; right: auto; }
+#weather-panel { min-width: 270px; max-height: calc(100vh - 130px); overflow-y: auto; }
+
+/* ── Panel inner sections ────────────────────────────────────────────── */
+.ctrl-section { margin-bottom: 12px; }
+.ctrl-label {
+  font-size: 12px; color: #888; text-transform: uppercase;
+  letter-spacing: 0.06em; margin-bottom: 6px; font-weight: 600;
+}
+.ctrl-section label {
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer; padding: 3px 0; color: #ddd; font-size: 14px;
+}
+.ctrl-section label:hover { color: #fff; }
+.ctrl-divider { border-top: 1px solid rgba(255,255,255,0.1); margin: 12px 0; }
+
+/* Basemap buttons */
+.basemap-btn {
+  display: inline-block; padding: 6px 13px;
+  border-radius: 6px; cursor: pointer;
+  font-size: 13px; font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: transparent; color: #bbb;
+  transition: all 0.2s; margin-right: 4px; margin-bottom: 4px;
+}
+.basemap-btn.active { background: #1a4a6b; border-color: #2980b9; color: #fff; }
+.basemap-btn:hover  { color: #fff; border-color: rgba(255,255,255,0.4); }
+
+/* Road filter select */
+select {
+  width: 100%; background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #ddd; border-radius: 5px;
+  padding: 5px 8px; font-size: 12px; margin-top: 4px;
+}
+select:focus { outline: none; border-color: #DAA520; }
+
+/* Marker + Draw tool buttons */
+.tool-btn {
+  display: inline-block; padding: 4px 10px;
+  border-radius: 6px; cursor: pointer;
+  font-size: 11px; font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: transparent; color: #bbb;
+  transition: all 0.2s; margin-right: 3px; margin-bottom: 3px;
+}
+.tool-btn:hover  { color: #fff; border-color: rgba(255,255,255,0.4); }
+.tool-btn.active { background: #4a1a6b; border-color: #8B45c8; color: #fff; }
+.tool-btn.danger { color: #e74c3c; border-color: rgba(231,76,60,0.4); }
+.tool-btn.danger:hover { background: rgba(231,76,60,0.2); }
+
+/* Marker selects */
+.marker-select {
+  width: 100%; background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #ddd; border-radius: 5px;
+  padding: 4px 8px; font-size: 11px; margin-top: 3px; margin-bottom: 4px;
+}
+
+/* Measurement display */
+#measure-display {
+  font-size: 11px; color: #DAA520; font-weight: 600;
+  margin-top: 4px; min-height: 16px;
+}
+
+/* ── Legend internals ────────────────────────────────────────────────── */
+.leg-section {
+  font-size: 12px; color: #888; text-transform: uppercase;
+  letter-spacing: 0.05em; margin: 10px 0 5px 0; font-weight: 600;
+}
+.leg-row    { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; font-size: 14px; }
+.leg-swatch { width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0; }
+.leg-line   { width: 24px; height: 4px; border-radius: 2px; flex-shrink: 0; }
+.leg-circle { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Popups ──────────────────────────────────────────────────────────── */
+.mapboxgl-popup-content {
+  background: rgba(14,17,23,0.97) !important;
+  color: #f0f0f0 !important;
+  border-radius: 10px !important;
+  padding: 15px !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  min-width: 260px;
+  max-width: 520px;
+  max-height: calc(80vh - 60px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6) !important;
+  overflow-x: auto;
+  overflow-y: auto;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+  resize: both;
+}
+/* Prevent popup wrapper from clipping the resize handle */
+.mapboxgl-popup { overflow: visible !important; }
+.mapboxgl-popup-tip { display: none; }
+.mapboxgl-popup-close-button {
+  color: #888 !important; font-size: 18px !important;
+  top: 6px !important; right: 8px !important;
+}
+.p-title   { font-size: 14px; font-weight: 700; color: #DAA520; margin-bottom: 8px; }
+.p-table   { width: 100%; border-collapse: collapse; font-size: 12px; }
+.p-table td { padding: 3px 0; vertical-align: top; }
+.p-table td:first-child {
+  color: #888; padding-right: 10px;
+  white-space: nowrap; font-weight: 600; min-width: 80px; max-width: 120px;
+}
+.p-table td:last-child { color: #e0e0e0; word-break: break-word; overflow-wrap: break-word; }
+.p-divider { border-top: 1px solid rgba(255,255,255,0.1); margin: 8px 0; }
+.p-badge {
+  display: inline-block; padding: 2px 8px;
+  border-radius: 10px; font-size: 11px; font-weight: 600;
+}
+.badge-otc    { background: #1a5c1a; color: #6bcf6b; }
+.badge-draw   { background: #5c2a00; color: #f0932b; }
+.badge-youth  { background: #0a3d1a; color: #2ECC71; }
+.badge-arch   { background: #0a3d62; color: #74b9ff; }
+.badge-rifle  { background: #4a0000; color: #ff7979; }
+.badge-muzz   { background: #2d3436; color: #dfe6e9; }
+.badge-closed { background: #5c0000; color: #ff8888; }
+.p-note     { font-size: 11px; color: #777; margin-top: 6px; font-style: italic; word-break: break-word; overflow-wrap: break-word; }
+.p-section  { font-size: 10px; color: #777; text-transform: uppercase; letter-spacing: 0.05em; margin: 4px 0; }
+.p-restrict { font-size: 10px; color: #aaa; font-style: italic; padding: 1px 0 4px 0 !important; }
+.p-hunts-table th {
+  font-size: 10px; color: #777; text-transform: uppercase;
+  padding: 2px 0 4px 0; text-align: left; font-weight: 600; letter-spacing: 0.04em;
+}
+
+/* ── Popup drag handle ───────────────────────────────────────────────── */
+.popup-drag-handle {
+  text-align: center;
+  cursor: grab;
+  color: #444;
+  font-size: 16px;
+  line-height: 1;
+  margin-bottom: 8px;
+  user-select: none;
+  letter-spacing: 2px;
+}
+.popup-drag-handle:hover { color: #888; }
+.popup-drag-handle:active { cursor: grabbing; }
+
+/* ── Unified collapsible popup sections ──────────────────────────────── */
+.p-sec-hdr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 7px 0 5px 0;
+  color: #DAA520;
+  font-size: 13px;
+  font-weight: 700;
+  user-select: none;
+}
+.p-sec-hdr:hover { color: #f5deb3; }
+.p-sec-label { flex: 1; }
+.p-chev {
+  font-size: 10px;
+  color: #777;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+.p-sec-hdr.p-sec-open .p-chev { color: #DAA520; }
+.p-sec-body {
+  padding: 4px 0 6px 0;
+}
+.p-sec-hidden { display: none; }
+.p-sec-sep {
+  border-top: 1px solid rgba(255,255,255,0.10);
+  margin: 2px 0;
+}
+
+/* ── User marker popup ───────────────────────────────────────────────── */
+.marker-popup-content { font-size: 12px; }
+.marker-popup-content .p-title { font-size: 13px; }
+.marker-popup-content label { color: #aaa; font-size: 11px; }
+.marker-input {
+  width: 100%; margin: 2px 0 6px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #f0f0f0; border-radius: 5px;
+  padding: 4px 7px; font-size: 11px; resize: vertical;
+}
+.marker-confirm-btn {
+  background: #1a5c1a; color: #6bcf6b;
+  border: none; border-radius: 5px;
+  padding: 4px 12px; font-size: 11px; cursor: pointer;
+  margin-right: 6px; font-weight: 600;
+}
+.marker-cancel-btn {
+  background: rgba(255,255,255,0.08); color: #aaa;
+  border: none; border-radius: 5px;
+  padding: 4px 12px; font-size: 11px; cursor: pointer;
+}
+.marker-delete-btn {
+  background: rgba(231,76,60,0.2); color: #e74c3c;
+  border: 1px solid rgba(231,76,60,0.4); border-radius: 5px;
+  padding: 3px 10px; font-size: 11px; cursor: pointer;
+  margin-top: 8px; font-weight: 600;
+}
+
+/* Custom emoji marker elements */
+.user-marker-el {
+  width: 36px; height: 36px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; line-height: 1;
+  background: rgba(18,22,18,0.88);
+  border: 2px solid rgba(255,255,255,0.3);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.85), 0 0 0 1px rgba(0,0,0,0.4);
+  cursor: pointer;
+}
+/* Label text rendered below each user marker circle */
+.user-marker-label {
+  font-size: 10px; font-weight: 700; color: #fff;
+  background: rgba(0,0,0,0.68); border-radius: 3px;
+  padding: 1px 4px; white-space: nowrap; pointer-events: none;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.95);
+  letter-spacing: 0.02em; line-height: 1.4;
+  max-width: 90px; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Marker type picker grid */
+.mk-type-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 4px; margin-bottom: 6px;
+}
+.mk-type-btn {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px; color: #ddd;
+  padding: 6px 2px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center;
+  font-size: 17px; gap: 2px; transition: background 0.15s;
+}
+.mk-type-btn span {
+  font-size: 9px; color: #888; line-height: 1; text-align: center;
+}
+.mk-type-btn:hover { background: rgba(255,255,255,0.14); }
+.mk-type-btn.active {
+  background: rgba(116,185,255,0.22);
+  border-color: #74b9ff;
+}
+.mk-type-btn.active span { color: #74b9ff; }
+
+/* Mapbox Draw override */
+.mapbox-gl-draw_ctrl-draw-btn { opacity: 0.9; }
+
+/* ── Weather Panel ───────────────────────────────────────────────── */
+
+.wx-location {
+  font-size: 10px; color: #888; margin-bottom: 10px;
+  letter-spacing: 0.03em;
+}
+.wx-placeholder, .wx-loading {
+  font-size: 12px; color: #666; padding: 8px 0;
+  font-style: italic;
+}
+.wx-error { font-size: 12px; color: #e74c3c; padding: 6px 0; }
+
+.wx-refresh-btn {
+  margin-top: 10px; width: 100%; text-align: center;
+  display: block; box-sizing: border-box;
+}
+
+/* Day cards grid */
+.wx-grid { display: flex; flex-direction: column; gap: 6px; }
+
+.wx-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: grid;
+  grid-template-columns: 70px 26px 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 8px;
+  row-gap: 2px;
+  align-items: center;
+}
+.wx-card:hover { background: rgba(255,255,255,0.09); }
+
+/* Row 1 */
+.wx-day  { font-size: 11px; font-weight: 700; color: #DAA520; grid-row: 1; grid-column: 1; }
+.wx-icon { font-size: 20px; line-height: 1; text-align: center; grid-row: 1 / 3; grid-column: 2; align-self: center; }
+.wx-desc { font-size: 11px; color: #ccc; grid-row: 1; grid-column: 3; }
+
+/* Row 2 */
+.wx-temps { font-size: 12px; font-weight: 700; grid-row: 2; grid-column: 1; }
+.wx-hi    { color: #f39c12; }
+.wx-lo    { color: #74b9ff; font-weight: 400; }
+.wx-wind  { font-size: 10px; color: #777; grid-row: 2; grid-column: 3; }
+
+/* ── About / Welcome Modal ───────────────────────────────────────── */
+#about-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.72);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  backdrop-filter: blur(3px);
+}
+#about-overlay.hidden { display: none; }
+
+#about-modal {
+  background: linear-gradient(160deg, #1a2a1a 0%, #111c11 100%);
+  border: 1px solid rgba(218,165,32,0.35);
+  border-radius: 14px;
+  padding: 22px 24px 18px;
+  max-width: 520px;
+  width: 100%;
+  overflow: visible;
+  position: relative;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.7);
+  color: #ddd;
+  font-family: inherit;
+}
+
+#about-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+}
+#about-close:hover { color: #fff; background: rgba(255,255,255,0.1); }
+
+.about-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #DAA520;
+  text-align: center;
+  margin-bottom: 4px;
+  letter-spacing: 0.3px;
+}
+.about-subtitle {
+  font-size: 12px;
+  color: #888;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.about-welcome {
+  font-size: 12px;
+  color: #bbb;
+  line-height: 1.5;
+  background: rgba(255,255,255,0.04);
+  border-left: 3px solid #DAA520;
+  border-radius: 0 6px 6px 0;
+  padding: 8px 10px;
+  margin-bottom: 12px;
+}
+
+.about-section {
+  margin-bottom: 10px;
+}
+.about-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #DAA520;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.about-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(218,165,32,0.2);
+}
+
+.about-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.about-list li {
+  font-size: 12px;
+  color: #ccc;
+  padding: 3px 0 3px 12px;
+  position: relative;
+  line-height: 1.5;
+}
+.about-list li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: #DAA520;
+  font-weight: 700;
+}
+
+.about-disclaimer {
+  margin-top: 16px;
+  padding: 10px 12px;
+  background: rgba(231,76,60,0.12);
+  border: 1px solid rgba(231,76,60,0.35);
+  border-radius: 8px;
+  font-size: 11.5px;
+  color: #e8a090;
+  line-height: 1.5;
+}
+.about-disclaimer strong { color: #f0b0a0; }
+
+.about-start-btn {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 7px 0;
+  background: linear-gradient(135deg, #5a3000, #8B6914);
+  border: 1px solid #DAA520;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.about-start-btn:hover {
+  background: linear-gradient(135deg, #7a4400, #a88020);
+  transform: translateY(-1px);
+}

@@ -1,0 +1,280 @@
+<!-- Top Banner -->
+<div id='top-banner'>Southwest Idaho &mdash; Turkey Hunt Insights</div>
+
+<!-- Bottom Control Bar -->
+<div id='bottom-bar'>
+  <div class='bar-group'>
+    <button class='bar-btn' id='btn-panel-season' onclick='togglePanel("season")'>🗓️ Season</button>
+  </div>
+  <div class='bar-sep'></div>
+  <div class='bar-group'>
+    <button class='bar-btn' id='btn-panel-layers'  onclick='togglePanel("layers")'>🗂️ Layers</button>
+    <button class='bar-btn' id='btn-panel-legend'  onclick='togglePanel("legend")'>📜 Legend</button>
+    <button class='bar-btn' id='btn-panel-tools'   onclick='togglePanel("tools")'>🛠️ Tools</button>
+    <button class='bar-btn' id='btn-panel-weather' onclick='togglePanel("weather")'>🌤️ Weather</button>
+    <button class='bar-btn' id='btn-about'         onclick='openAboutModal()'>ℹ️ About</button>
+  </div>
+</div>
+
+<!-- Layers Panel -->
+<div class='map-panel' id='layers-panel'>
+  <div class='panel-title'>🗂️ Layers</div>
+
+  <div class='ctrl-section'>
+    <div class='ctrl-label'>Basemap</div>
+    <button class='basemap-btn active' id='btn-satellite' onclick='setBasemap("satellite")'>🛰 Satellite</button>
+    <button class='basemap-btn'        id='btn-outdoors'  onclick='setBasemap("outdoors")'>🌲 Outdoors</button>
+    <button class='basemap-btn'        id='btn-topo'      onclick='setBasemap("topo")'>🗻 Topo</button>
+  </div>
+
+  <div class='ctrl-divider'></div>
+
+  <div class='ctrl-section'>
+    <div class='ctrl-label'>📋 Regulations</div>
+    <label><input type='checkbox' id='toggle-gmu'     checked onchange='toggleGroup(this)'> Turkey GMU</label>
+    <label><input type='checkbox' id='toggle-offices'        onchange='toggleGroup(this)'> 🏛️ Regional Offices</label>
+  </div>
+
+  <div class='ctrl-divider'></div>
+
+  <div class='ctrl-section'>
+    <div class='ctrl-label'>🔓 Access</div>
+    <label><input type='checkbox' id='toggle-access'         onchange='toggleGroup(this)'> AccessYes! Locations</label>
+    <label><input type='checkbox' id='toggle-closed'         onchange='toggleGroup(this)'> 🚫 Areas Closed to Turkey Hunting</label>
+    <label><input type='checkbox' id='toggle-wma'            onchange='toggleGroup(this)'> 🦌 IDFG WMA</label>
+    <label><input type='checkbox' id='toggle-public'         onchange='toggleGroup(this)'> 🗺️ Public Access</label>
+    <label><input type='checkbox' id='toggle-trails'         onchange='toggleGroup(this)'> 🥾 Trails</label>
+    <label><input type='checkbox' id='toggle-motorized'      onchange='toggleGroup(this)'> 🛣️ Motorized Roads &amp; Trails</label>
+    <label><input type='checkbox' id='toggle-camps'          onchange='toggleGroup(this)'> ⛺ Campgrounds</label>
+  </div>
+
+  <div class='ctrl-divider'></div>
+
+  <div class='ctrl-section'>
+    <div class='ctrl-label'>🦃 Turkey Habitat</div>
+    <label><input type='checkbox' id='toggle-burned'         onchange='toggleGroup(this)'> 🔥 Burned Areas</label>
+    <label><input type='checkbox' id='toggle-logging'        onchange='toggleGroup(this)'> 🌲 Logging Clearings</label>
+    <label><input type='checkbox' id='toggle-decid-forest'   onchange='toggleGroup(this)'> 🌳 Deciduous Forest</label>
+    <label><input type='checkbox' id='toggle-cropland'       onchange='toggleGroup(this)'> 🌾 Cropland</label>
+    <label><input type='checkbox' id='toggle-snow'           onchange='toggleGroup(this)'> ❄️ Current Snow Cover</label>
+    <label><input type='checkbox' id='toggle-range'          onchange='toggleGroup(this)'> 🦃 Turkey Range</label>
+    <label><input type='checkbox' id='toggle-water'          onchange='toggleGroup(this)'> 💧 Rivers, Streams &amp; Lakes</label>
+  </div>
+
+
+</div>
+
+<!-- Legend Panel -->
+<div class='map-panel' id='legend-panel'>
+  <div class='panel-title'>📜 Legend</div>
+
+  <!-- ── Regulations ── -->
+  <div data-for='toggle-gmu'>
+    <div class='leg-section'>📋 Regulations - Turkey GMU</div>
+    <div class='leg-row'><div class='leg-swatch' style='background:#686868;opacity:0.20;border:2px solid #3c3c3c'></div> Unit Boundary</div>
+  </div>
+
+  <!-- ── Access ── -->
+  <div data-for='toggle-access'>
+    <div class='leg-section'>🔓 Access</div>
+    <div class='leg-row'><div class='leg-swatch' style='background:#27AE60;opacity:0.6'></div> AccessYes! Location</div>
+  </div>
+
+  <div data-for='toggle-closed'>
+    <div class='leg-row'><div class='leg-swatch' style='background:#e74c3c;opacity:0.4;border:1px dashed #c0392b'></div> 🚫 Areas Closed to Turkey Hunting</div>
+  </div>
+
+  <div data-for='toggle-wma'>
+    <div class='leg-row'><div class='leg-swatch' style='background:#1abc9c;opacity:0.6;border:1px solid #16a085'></div> 🦌 Wildlife Management Area</div>
+  </div>
+
+  <div data-for='toggle-public'>
+    <div class='leg-row'><div class='leg-swatch' style='background:#f5e642;opacity:0.45'></div> BLM</div>
+    <div class='leg-row'><div class='leg-swatch' style='background:#2ca050;opacity:0.45'></div> USFS</div>
+    <div class='leg-row'><div class='leg-swatch' style='background:#5c8a35;opacity:0.45'></div> NPS</div>
+    <div class='leg-row'><div class='leg-swatch' style='background:#4a90d9;opacity:0.45'></div> FWS</div>
+    <div class='leg-row'><div class='leg-swatch' style='background:#b0b0b0;opacity:0.45'></div> IDL (State)</div>
+    <div class='leg-row'><div class='leg-swatch' style='background:#a0b4c8;opacity:0.45'></div> IDFG</div>
+    <div class='leg-row'><div class='leg-swatch' style='background:#2980b9;opacity:0.45'></div> BOR</div>
+    <div class='leg-row'><div class='leg-swatch' style='background:#8e44ad;opacity:0.45'></div> DOD</div>
+    <div class='leg-row'><div class='leg-swatch' style='background:#e67e22;opacity:0.45'></div> BIA</div>
+  </div>
+
+  <div data-for='toggle-trails'>
+    <div class='leg-row'><div class='leg-line' style='background:#c0392b;border-top:2px dashed #c0392b;height:0'></div> 🥾 Non-motorized Trail</div>
+  </div>
+
+  <div data-for='toggle-motorized'>
+    <div class='leg-section'>🛣️ Motorized Roads - Class</div>
+    <div class='leg-row'><div class='leg-line' style='background:#74b9ff'></div> Paved / Highway</div>
+    <div class='leg-row'><div class='leg-line' style='background:#fdcb6e'></div> Gravel / Improved</div>
+    <div class='leg-row'><div class='leg-line' style='background:#e17055'></div> Native / Primitive</div>
+    <div class='leg-row'><div class='leg-line' style='background:#b2bec3'></div> Other / Unclassified</div>
+  </div>
+
+  <div data-for='toggle-camps'>
+    <div class='leg-row'><span style='font-size:20px;line-height:1;margin-right:6px'>⛺</span> USFS Campsite</div>
+  </div>
+
+  <!-- ── Turkey Habitat ── -->
+  <div data-for='toggle-burned'>
+    <div class='leg-section'>🦃 Turkey Habitat</div>
+    <div class='leg-row'><div class='leg-swatch' style='background:#e67e22;opacity:0.6'></div> 🔥 Burned Areas</div>
+  </div>
+
+  <div data-for='toggle-logging'>
+    <div class='leg-row'><div class='leg-swatch' style='background:#d4e157;opacity:0.6'></div> 🌲 Logging Clearings</div>
+  </div>
+
+  <div data-for='toggle-decid-forest'>
+    <div class='leg-row'><div class='leg-swatch' style='background:#39FF14;opacity:0.45;border:1px solid #228B22'></div> 🌳 Deciduous Forest</div>
+  </div>
+
+  <div data-for='toggle-cropland'>
+    <div class='leg-row'><div class='leg-swatch' style='background:#d4a017;opacity:0.6;border:1px solid #7d5a00'></div> 🌾 Cultivated Cropland</div>
+  </div>
+
+  <div data-for='toggle-snow'>
+    <div class='leg-row'><div class='leg-swatch' style='background:#dff0ff;opacity:0.85;border:1px solid #a8d4f5'></div> ❄️ Current Snow Cover</div>
+  </div>
+
+  <div data-for='toggle-range'>
+    <div class='leg-row'><div class='leg-swatch' style='background:#FF6600;opacity:0.5'></div> 🦃 Turkey Range Distribution</div>
+  </div>
+
+  <div data-for='toggle-water'>
+    <div class='leg-section'>💧 Rivers, Streams &amp; Lakes</div>
+    <div class='leg-row'><div class='leg-line' style='background:#2471a3;height:2px'></div> Year Round River / Stream</div>
+    <div class='leg-row'><div class='leg-line' style='background:#85c1e9;height:1px'></div> 🌊 Spring Runoff Stream</div>
+    <div class='leg-row'><div class='leg-swatch' style='background:#2980b9;opacity:0.5;border:1px solid #1a5276'></div> 🏔️ Lake / Reservoir</div>
+  </div>
+
+  <!-- ── Other ── -->
+  <div data-for='toggle-offices'>
+    <div class='leg-section'>🗺️ Other</div>
+    <div class='leg-row'><span style='font-size:20px;line-height:1;margin-right:6px'>🏛️</span> Regional Office</div>
+  </div>
+
+  <!-- My Markers - populated dynamically by updateMarkerLegend() in map.js -->
+  <div id='marker-legend-container'></div>
+
+</div>
+
+<!-- Tools Panel -->
+<div class='map-panel' id='tools-panel'>
+  <div class='panel-title'>🛠️ Tools</div>
+
+  <div class='ctrl-section'>
+    <div class='ctrl-label'>📍 My Markers</div>
+    <div class='mk-type-grid'>
+      <button class='mk-type-btn'        id='mk-btn-turkey'  onclick='selectMarkerType("turkey")' >🦃<span>Turkey</span></button>
+      <button class='mk-type-btn'        id='mk-btn-gobbler' onclick='selectMarkerType("gobbler")'>📢<span>Gobbler</span></button>
+      <button class='mk-type-btn'        id='mk-btn-sign'    onclick='selectMarkerType("sign")'   >🪶<span>Sign</span></button>
+      <button class='mk-type-btn'        id='mk-btn-camp'    onclick='selectMarkerType("camp")'   >🏕️<span>Camp</span></button>
+      <button class='mk-type-btn'        id='mk-btn-blind'   onclick='selectMarkerType("blind")'  >🛖<span>Blind</span></button>
+      <button class='mk-type-btn'        id='mk-btn-decoys'  onclick='selectMarkerType("decoys")' >🦆<span>Decoys</span></button>
+      <button class='mk-type-btn'        id='mk-btn-deer'    onclick='selectMarkerType("deer")'   >🦌<span>Deer</span></button>
+      <button class='mk-type-btn'        id='mk-btn-bear'    onclick='selectMarkerType("bear")'   >🐻<span>Bear</span></button>
+      <button class='mk-type-btn'        id='mk-btn-other'   onclick='selectMarkerType("other")'  >🐾<span>Other</span></button>
+      <button class='mk-type-btn'        id='mk-btn-glass'   onclick='selectMarkerType("glass")'  >🔍<span>Glassing Spot</span></button>
+      <button class='mk-type-btn'        id='mk-btn-waypoint' onclick='selectMarkerType("waypoint")'>📍<span>Waypoint</span></button>
+    </div>
+    <div style='display:flex;gap:6px'>
+      <button class='tool-btn' id='btn-place-marker' onclick='toggleMarkerMode()'>✖ Cancel</button>
+      <button class='tool-btn danger' onclick='clearAllMarkers()'>🗑️ Clear All</button>
+    </div>
+  </div>
+
+  <div class='ctrl-divider'></div>
+
+  <div class='ctrl-section'>
+    <div class='ctrl-label'>📐 Draw &amp; Measure</div>
+    <button class='tool-btn' onclick='startDraw("line")'>📏 Line</button>
+    <button class='tool-btn' onclick='startDraw("polygon")'>⬡ Polygon</button>
+    <button class='tool-btn danger' onclick='clearDraw()'>🗑️ Clear</button>
+    <div id='measure-display'></div>
+  </div>
+</div>
+
+<!-- Season Panel -->
+<div class='map-panel' id='season-panel'>
+  <div class='panel-title'>🗓️ Season</div>
+  <div class='ctrl-section'>
+    <label><input type='checkbox' id='filter-spring' checked onchange='applySeasonFilter()'> 🌿 Spring</label>
+    <label><input type='checkbox' id='filter-fall'         onchange='applySeasonFilter()'> 🍂 Fall</label>
+  </div>
+</div>
+
+<!-- Weather Panel -->
+<div class='map-panel' id='weather-panel'>
+  <div class='panel-title'>🌤️ 7-Day Forecast</div>
+  <div id='weather-location' class='wx-location'>Map center location</div>
+  <div id='weather-content' class='wx-placeholder'>
+    Click anywhere on the map to get the forecast for that location.
+  </div>
+  <button class='tool-btn wx-refresh-btn' onclick='getWeather(true)'>📍 Use Map Center</button>
+</div>
+
+<!-- Welcome / About Modal -->
+<div id='about-overlay' onclick='closeAboutModal()'>
+  <div id='about-modal' onclick='event.stopPropagation()'>
+    <button id='about-close' onclick='closeAboutModal()'>✕</button>
+
+    <div class='about-title'>🦃 Southwest Idaho - Turkey Hunt Insights</div>
+    <div class='about-subtitle'>Interactive scouting &amp; planning map for GMUs 32, 32A, 33, 38 &amp; 39</div>
+
+    <div class='about-welcome'>
+      Welcome! This map is built to help you scout and plan your Idaho turkey hunt. Use the panels at the bottom right to explore layers, read the legend, and access tools like weather, markers, and draw &amp; measure. Click anything on the map to learn more about it.
+    </div>
+
+    <div class='about-section'>
+      <div class='about-section-title'>🗓️ Seasons</div>
+      <ul class='about-list'>
+        <li>Use the <strong>Spring / Fall</strong> buttons at the bottom to switch seasons - GMU boundaries, hunt types, dates, and sex restrictions all update automatically</li>
+        <li>Hunt types shown: <strong>General</strong> (open to all), <strong>Controlled</strong> (draw tag), <strong>Youth</strong></li>
+        <li>Click any GMU on the map to see season dates, sex restrictions, and a <strong>direct link to the 2026–27 regulations</strong></li>
+      </ul>
+    </div>
+
+    <div class='about-section'>
+      <div class='about-section-title'>🗂️ Map Layers</div>
+      <ul class='about-list'>
+        <li><strong>📋 Regulations</strong> - GMU boundaries colored by hunt type and IDFG Regional Offices; click any unit for season details and a link to the official IDFG regs</li>
+        <li><strong>🔓 Access</strong> - AccessYes! properties, WMAs, public land ownership, trails, roads, and campgrounds to help plan your hunt</li>
+        <li><strong>🦃 Turkey Habitat</strong> - Burned areas, logging clearings, deciduous forest, cropland, snow cover, turkey range, and water; stack these to find high-probability spots</li>
+      </ul>
+    </div>
+
+    <div class='about-section'>
+      <div class='about-section-title'>🖱️ Click Any Feature</div>
+      <ul class='about-list'>
+        <li>Every layer is interactive - click for details, scouting tips, and acreage</li>
+        <li>GMU popups include a <strong>link to the official IDFG regulations</strong> for that unit</li>
+      </ul>
+    </div>
+
+    <div class='about-section'>
+      <div class='about-section-title'>📍 My Markers</div>
+      <ul class='about-list'>
+        <li>Open <strong>🛠️ Tools</strong>, pick a marker type (Turkey, Sign, Roost, Camp, etc.), then click the map to drop a pin</li>
+        <li>Add notes and save - markers persist on your device between visits</li>
+      </ul>
+    </div>
+
+    <div class='about-section'>
+      <div class='about-section-title'>🛠️ Tools</div>
+      <ul class='about-list'>
+        <li><strong>🌤️ Weather</strong> - Click the map then open Weather for a live 7-day NWS forecast at that exact location</li>
+        <li><strong>📐 Draw &amp; Measure</strong> - Draw lines (distance in miles) or polygons (area in acres) to plan routes and setups</li>
+        <li><strong>🗺️ Basemap</strong> - Switch between Satellite, Outdoors, and Topo in the Layers panel</li>
+      </ul>
+    </div>
+
+    <div class='about-disclaimer'>
+      ⚠️ <strong>Always verify current regulations before heading into the field.</strong>
+      Regulations, season dates, and area closures can change. Access the official regs directly from any GMU popup on the map.
+    </div>
+
+    <button class='about-start-btn' onclick='closeAboutModal()'>Start Scouting →</button>
+  </div>
+</div>
