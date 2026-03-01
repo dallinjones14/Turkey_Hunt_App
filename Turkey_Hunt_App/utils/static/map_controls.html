@@ -14,6 +14,10 @@
     <button class='bar-btn' id='btn-panel-weather' onclick='togglePanel("weather")'>🌤️ Weather</button>
     <button class='bar-btn' id='btn-about'         onclick='openAboutModal()'>ℹ️ About</button>
   </div>
+  <div class='bar-sep'></div>
+  <div class='bar-group'>
+    <button class='bar-btn' id='btn-edit-mode' onclick='toggleEditMode()'>✏️ Edit</button>
+  </div>
 </div>
 
 <!-- Layers Panel -->
@@ -168,7 +172,7 @@
     <div class='ctrl-label'>📍 My Markers</div>
     <div class='mk-type-grid'>
       <button class='mk-type-btn'        id='mk-btn-turkey'  onclick='selectMarkerType("turkey")' >🦃<span>Turkey</span></button>
-      <button class='mk-type-btn'        id='mk-btn-gobbler' onclick='selectMarkerType("gobbler")'>📢<span>Gobbler</span></button>
+      <button class='mk-type-btn'        id='mk-btn-gobbler' onclick='selectMarkerType("gobbler")'>📢<span>Gobbles</span></button>
       <button class='mk-type-btn'        id='mk-btn-sign'    onclick='selectMarkerType("sign")'   >🪶<span>Sign</span></button>
       <button class='mk-type-btn'        id='mk-btn-camp'    onclick='selectMarkerType("camp")'   >🏕️<span>Camp</span></button>
       <button class='mk-type-btn'        id='mk-btn-blind'   onclick='selectMarkerType("blind")'  >🛖<span>Blind</span></button>

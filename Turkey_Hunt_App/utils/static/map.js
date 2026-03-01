@@ -24,6 +24,8 @@ const TOM_MARKER_IMG   = '__TOM_MARKER_IMG__';   // base64 PNG, empty if file mi
 
 // ── State ─────────────────────────────────────────────────────────────────────
 let markerModeActive = false;
+let drawModeActive   = false;  // true while Mapbox Draw line/polygon mode is active
+let editModeActive   = false;  // master gate: blocks popups, unlocks markers + draw
 let userMarkers      = [];
 let layerVisibility  = {};   // saved before a basemap style switch
 let _layersAdded     = false; // guard: only re-init layers on style SWITCH, not initial load
@@ -821,7 +823,7 @@ function attachPopups() {
   }
 
   map.on('click', e => {
-    if (markerModeActive) return;
+    if (editModeActive) return;
 
     const activeLayers = CLICKABLE.filter(id => {
       if (!map.getLayer(id)) return false;
@@ -1190,9 +1192,14 @@ function _deadCode() { // old per-layer handlers kept here only to preserve git 
 }
 
 // ── Draw measurement events ───────────────────────────────────────────────────
-map.on('draw.create', updateMeasurements);
-map.on('draw.update', updateMeasurements);
+map.on('draw.create', e => updateMeasurements(e.features));
+map.on('draw.update', e => updateMeasurements(e.features));
 map.on('draw.delete', () => { document.getElementById('measure-display').textContent = ''; });
+// Track whether Draw is in an active drawing mode so popups are suppressed
+map.on('draw.modechange', e => {
+  drawModeActive = (e.mode === 'draw_line_string' || e.mode === 'draw_polygon');
+  if (drawModeActive && activePopup) { activePopup.remove(); activePopup = null; }
+});
 
 // ── Map click for marker placement ───────────────────────────────────────────
 // Note: the popup click handler already has `if (markerModeActive) return;`
@@ -1200,7 +1207,7 @@ map.on('draw.delete', () => { document.getElementById('measure-display').textCon
 // here because the GMU polygon covers the entire hunting area - doing so would
 // silently swallow every click and prevent the form from ever opening.
 map.on('click', e => {
-  if (!markerModeActive || _markerFormOpen || !selectedMarkerType) return;
+  if (!editModeActive || _markerFormOpen || !selectedMarkerType) return;
   openMarkerForm(e.lngLat);
 });
 
@@ -1402,28 +1409,38 @@ function updateLegend() {
 // ── Draw & measurements ───────────────────────────────────────────────────────
 function startDraw(mode) {
   if (!draw) return;
+  if (activePopup) { activePopup.remove(); activePopup = null; }
+  // Clear any active marker selection when switching to draw
+  markerModeActive = false;
+  selectedMarkerType = null;
+  document.querySelectorAll('.mk-type-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-place-marker').classList.remove('active');
+  map.getCanvas().style.cursor = '';
+  drawModeActive = true;
+  if (!editModeActive) toggleEditMode();
   if (mode === 'line')    draw.changeMode('draw_line_string');
   if (mode === 'polygon') draw.changeMode('draw_polygon');
 }
 function clearDraw() {
   if (draw) draw.deleteAll();
+  drawModeActive = false;
   document.getElementById('measure-display').textContent = '';
 }
-function updateMeasurements() {
-  if (!draw) return;
-  const data = draw.getAll();
+function updateMeasurements(features) {
+  if (!features || !features.length) return;
+  const f = features[0];
   let msg = '';
-  data.features.forEach(f => {
-    if (f.geometry.type === 'LineString') msg = `Distance: ${turf.length(f, { units: 'miles' }).toFixed(2)} mi`;
-    else if (f.geometry.type === 'Polygon') msg = `Area: ${(turf.area(f) / 4046.86).toFixed(1)} acres`;
-  });
+  if (f.geometry.type === 'LineString')
+    msg = `Distance: ${turf.length(f, { units: 'miles' }).toFixed(2)} mi`;
+  else if (f.geometry.type === 'Polygon')
+    msg = `Area: ${(turf.area(f) / 4046.86).toFixed(1)} acres`;
   document.getElementById('measure-display').textContent = msg;
 }
 
 // ── User Markers ──────────────────────────────────────────────────────────────
 const MARKER_TYPES = {
   turkey:   { icon: '🦃', color: '#8B0000', label: 'Turkey Sighting' }, // sub-type set in form
-  gobbler:  { icon: '📢', color: '#A93226', label: 'Heard Gobbler' },
+  gobbler:  { icon: '📢', color: '#A93226', label: 'Heard Gobbles' },
   sign:     { icon: '🪶', color: '#E67E22', label: 'Turkey Sign' },     // feather = tracks/scratch sign
   camp:     { icon: '🏕️', color: '#6D4C41', label: 'Camp' },
   blind:    { icon: '🛖', color: '#1A237E', label: 'Blind/Stand' },     // hut = hunting blind
@@ -1449,14 +1466,34 @@ function selectMarkerType(type) {
   markerModeActive = true;
   document.getElementById('btn-place-marker').classList.add('active');
   map.getCanvas().style.cursor = 'crosshair';
+  if (!editModeActive) toggleEditMode();
 }
 
 function toggleMarkerMode() {
-  markerModeActive = !markerModeActive;
-  document.getElementById('btn-place-marker').classList.toggle('active', markerModeActive);
-  map.getCanvas().style.cursor = markerModeActive ? 'crosshair' : '';
-  if (!markerModeActive)
+  markerModeActive = false;
+  selectedMarkerType = null;
+  document.getElementById('btn-place-marker').classList.remove('active');
+  map.getCanvas().style.cursor = '';
+  document.querySelectorAll('.mk-type-btn').forEach(b => b.classList.remove('active'));
+}
+
+function toggleEditMode() {
+  editModeActive = !editModeActive;
+  const btn = document.getElementById('btn-edit-mode');
+  if (btn) btn.classList.toggle('active', editModeActive);
+  if (!editModeActive) {
+    // Turning off — cancel all editing activity
+    markerModeActive = false;
+    selectedMarkerType = null;
     document.querySelectorAll('.mk-type-btn').forEach(b => b.classList.remove('active'));
+    const placeBtn = document.getElementById('btn-place-marker');
+    if (placeBtn) placeBtn.classList.remove('active');
+    if (draw) draw.changeMode('simple_select');
+    drawModeActive = false;
+    map.getCanvas().style.cursor = '';
+  } else {
+    if (activePopup) { activePopup.remove(); activePopup = null; }
+  }
 }
 
 function openMarkerForm(lnglat) {

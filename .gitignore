@@ -1,5 +1,17 @@
+# Secrets
 .streamlit/secrets.toml
+Turkey_Hunt_App/.streamlit/secrets.toml
+
+# Raw / large data — never commit these
 data/raw/
+Turkey_Hunt_App/pipelines/data/raw/
+*.tif
+*.tiff
+
+# Large processed files
+Turkey_Hunt_App/pipelines/data/processed/water_features.geojson
+
+# Python
 __pycache__/
 *.pyc
 *.pyo
