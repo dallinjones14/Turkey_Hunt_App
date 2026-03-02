@@ -40,7 +40,7 @@ if not st.session_state.authenticated:
     st.markdown("""
     <div style='text-align:center;margin-bottom:24px'>
       <div style='font-size:20px;font-weight:700;color:#DAA520;margin-top:8px'>
-        Southwest Idaho - Turkey Hunt Insights
+        Turkey Hunt Insights - Southwest Idaho
       </div>
       <div style='font-size:13px;color:#888;margin-top:4px'>Sign in to access the map</div>
     </div>

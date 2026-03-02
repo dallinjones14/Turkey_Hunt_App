@@ -1446,6 +1446,7 @@ const MARKER_TYPES = {
   deer:     { icon: '🦌', color: '#795548', label: 'Deer' },            // brown
   bear:     { icon: '🐻', color: '#424242', label: 'Bear' },
   other:    { icon: '🐾', color: '#546E7A', label: 'Other Animal' },    // paw print
+  roost:    { icon: '🌲', color: '#2E7D32', label: 'Roost Tree' },
   glass:    { icon: '🔍', color: '#00695C', label: 'Glassing Spot' },
   waypoint: { icon: '📍', color: '#6A1B9A', label: 'Waypoint' },
 };
