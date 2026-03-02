@@ -54,7 +54,6 @@ const LAYER_GROUPS = {
 const BASEMAP_STYLES = {
   satellite: 'mapbox://styles/mapbox/satellite-streets-v12',
   outdoors:  'mapbox://styles/mapbox/outdoors-v12',
-  topo:      'mapbox://styles/mapbox/outdoors-v12',
 };
 
 // ── Map init ──────────────────────────────────────────────────────────────────
