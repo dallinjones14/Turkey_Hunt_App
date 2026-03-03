@@ -38,38 +38,11 @@ if not st.session_state.authenticated:
     """, unsafe_allow_html=True)
 
     st.markdown("""
-    <style>
-      @keyframes turkeyWalk {
-        0%   { left: -12%; }
-        100% { left: 112%; }
-      }
-      .turkey-track {
-        position: relative;
-        width: 100%;
-        height: 44px;
-        background: rgba(218,165,32,0.07);
-        border-radius: 22px;
-        border: 1px solid rgba(218,165,32,0.22);
-        overflow: hidden;
-        margin: 16px auto 24px;
-      }
-      .turkey-runner {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 28px;
-        line-height: 1;
-        animation: turkeyWalk 2.4s linear infinite;
-      }
-    </style>
-    <div style='text-align:center;margin-bottom:4px'>
+    <div style='text-align:center;margin-bottom:24px'>
       <div style='font-size:20px;font-weight:700;color:#DAA520;margin-top:8px'>
         Turkey Hunt Insights - Southwest Idaho
       </div>
       <div style='font-size:13px;color:#888;margin-top:4px'>Sign in to access the map</div>
-    </div>
-    <div class='turkey-track'>
-      <span class='turkey-runner'>🦃</span>
     </div>
     """, unsafe_allow_html=True)
 
@@ -127,12 +100,51 @@ except (KeyError, FileNotFoundError):
     st.stop()
 
 
-@st.cache_data(show_spinner="Loading hunt data...")
+@st.cache_data(show_spinner=False)
 def get_data():
     return load_all_data()
 
 
+_loading = st.empty()
+_loading.markdown("""
+<style>
+  @keyframes turkeyWalk {
+    0%   { left: -12%; }
+    100% { left: 112%; }
+  }
+  .turkey-track {
+    position: relative;
+    width: 320px;
+    height: 48px;
+    background: rgba(218,165,32,0.08);
+    border-radius: 24px;
+    border: 1px solid rgba(218,165,32,0.25);
+    overflow: hidden;
+    margin: 20px auto 0;
+  }
+  .turkey-runner {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 30px;
+    line-height: 1;
+    animation: turkeyWalk 2.4s linear infinite;
+  }
+</style>
+<div style='position:fixed;inset:0;background:#0d140d;display:flex;flex-direction:column;
+            align-items:center;justify-content:center;z-index:99999'>
+  <div style='font-size:18px;font-weight:600;color:#DAA520;margin-bottom:8px'>
+    Turkey Hunt Insights
+  </div>
+  <div style='font-size:12px;color:#666;margin-bottom:4px'>Loading scouting data...</div>
+  <div class='turkey-track'>
+    <span class='turkey-runner'>🦃</span>
+  </div>
+</div>
+""", unsafe_allow_html=True)
+
 data = get_data()
+_loading.empty()
 
 map_html = build_mapbox_html(
     mapbox_token          = MAPBOX_TOKEN,
