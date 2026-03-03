@@ -33,13 +33,26 @@ from shapely.ops import unary_union
 from _gmu_clip import clip_to_master_gmu
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
-TIF_IN = Path(r"C:\Users\drjon\Downloads\OnX-GMU_Project\Turkey_Hunt_App\pipelines\data\raw\NIC.IMS_v3_20260227_1km.tif")
+_RASTER_DIR = Path(__file__).resolve().parent / "data" / "raw" / "Rasters"
+
+def _find_tif() -> Path:
+    """Return the newest (by modification time) IMS GeoTIFF in data/raw/Rasters/."""
+    tifs = sorted(_RASTER_DIR.glob("*.tif"), key=lambda p: p.stat().st_mtime, reverse=True)
+    if not tifs:
+        raise FileNotFoundError(
+            f"No .tif files found in {_RASTER_DIR}\n"
+            "Place the NIC IMS GeoTIFF there and re-run."
+        )
+    print(f"  Using raster: {tifs[0].name}")
+    return tifs[0]
+
+TIF_IN = _find_tif()
 
 ROOT = Path(__file__).resolve().parent.parent
 PROCESSED = ROOT / "pipelines" / "data" / "processed"
 MASTER_GMUS = PROCESSED / "master_turkey_gmu.geojson"
 
-TIF_OUT = PROCESSED / "NIC.IMS_v3_20260227_1km_clipped_to_GMUs.tif"
+TIF_OUT = PROCESSED / (TIF_IN.stem + "_clipped_to_GMUs.tif")
 SNOW_GEOJSON = PROCESSED / "snow_cover.geojson"
 
 SNOW_VALUE = 4  # NIC IMS: snow-covered land
